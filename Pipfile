@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "==2.0.1"
+pytest = "==6.2.4"
+requests = "==2.25.1"
+flask-sqlalchemy = "==2.5.1"
+gunicorn = "==20.1.0"
+psycopg2-binary = "==2.9.1"
+python-dotenv = "*"
+redis = "==3.5.3"
+validators = "==0.18.2"
+raven = {version = "==6.10.0", extras = ["flask"]}
+deterministic-rsa-keygen = "*"
+
+[dev-packages]
+ipython = "*"
+ipdb = "*"
+
+[requires]
+python_version = "3.9"
