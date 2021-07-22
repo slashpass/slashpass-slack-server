@@ -1,14 +1,12 @@
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
 *.db
 .env
 *.pyc
 *__pycache__*
 .coverage
-.elasticbeanstalk/*
 .pytest_cache*
 .vscode
-slack_server/static/.webassets-cache
-slack_server/static/dist
-slack_server/static/lib
-zappa_settings.json
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
