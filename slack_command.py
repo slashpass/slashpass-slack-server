@@ -4,7 +4,7 @@ import validators
 from flask import Blueprint, abort, jsonify, request
 
 from core import SlashpassError
-from environ import CONFIGURATION_GUIDE_URL, SITE
+from environ import CONFIGURATION_GUIDE_URL, SLACK_SERVER
 from server import Team, cmd, db
 from utils import error, success, valid_slack_request, warning
 
@@ -232,7 +232,7 @@ def api():
                                 "text": "Open editor",
                                 "style": "primary",
                                 "type": "button",
-                                "url": "{}/insert/{}".format(SITE, token),
+                                "url": "{}/insert/{}".format(SLACK_SERVER, token),
                             }
                         ],
                     }

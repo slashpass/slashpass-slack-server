@@ -42,7 +42,7 @@ This project was build focused in establishing a communication where the trustne
 | DEMO_SERVER | URL of the password storage server, this URL is used to setup the command for testing purposes |
 | DATABASE_URL | Database URL where is stored the password storage server addresses of each client |
 | SENTRY_DSN | Configuration required by the Sentry SDKs |
-| SITE | URL of this server, it is used by the command to show the insert password editor URL |
+| SLACK_SERVER | URL of this server, it is used by the command to show the insert password editor URL |
 | SLACK_CLIENT_ID | Slack Client ID |
 | SLACK_CLIENT_SECRET | Slack APP Secret |
 | VERIFICATION_TOKEN | Slack Verification Token |
