@@ -29,11 +29,18 @@ db = SQLAlchemy(server)
 
 class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    slack_id = db.Column(db.String, unique=True)
-    name = db.Column(db.String, unique=True)
-    url = db.Column(db.String, nullable=True)
-    public_key = db.Column(db.Text, nullable=True)
+    access_token = db.Column(db.String)
+    authed_user = db.Column(db.String)
+    bot_user_id = db.Column(db.String)
     created = db.Column(db.DateTime)
+    enterprise_id = db.Column(db.String, nullable=True)
+    enterprise_name = db.Column(db.String, nullable=True)
+    is_enterprise_install = db.Column(db.Boolean)
+    public_key = db.Column(db.Text, nullable=True)
+    scope = db.Column(db.String)
+    team_id = db.Column(db.String, unique=True)
+    team_name = db.Column(db.String)
+    url = db.Column(db.String, nullable=True)
 
     def register_server(self, url):
         self.url = url
@@ -54,9 +61,27 @@ class Team(db.Model):
         url_parts[2] = os.path.join(url_parts[2], path)
         return urlunparse(url_parts)
 
-    def __init__(self, slack_id, name):
-        self.slack_id = slack_id
-        self.name = name
+    def __init__(
+        self,
+        access_token,
+        authed_user,
+        bot_user_id,
+        enterprise_id,
+        enterprise_name,
+        is_enterprise_install,
+        scope,
+        team_id,
+        team_name,
+    ):
+        self.access_token = access_token
+        self.authed_user = authed_user
+        self.bot_user_id = bot_user_id
+        self.enterprise_id = enterprise_id
+        self.enterprise_name = enterprise_name
+        self.is_enterprise_install = is_enterprise_install
+        self.scope = scope
+        self.team_id = team_id
+        self.team_name = team_name
         if self.created is None:
             self.created = datetime.utcnow()
 

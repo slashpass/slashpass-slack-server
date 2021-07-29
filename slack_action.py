@@ -29,12 +29,12 @@ def action_api():
 
         elif action == "no_configure":
             return success(
-                "Sure! for more information about the pass command working "
-                "check `/pass help` or our web page in "
-                "https://slashpass.co"
+                "Sure! for more information on how the pass command "
+                "works, check out `/pass help` or our website "
+                "at https://slashpass.co"
             )
 
-        team = db.session.query(Team).filter_by(slack_id=payload["team"]["id"]).first()
+        team = db.session.query(Team).filter_by(team_id=payload["team"]["id"]).first()
 
         if action == "reconfigure_server":
             if not validators.url(option["value"]):
@@ -51,8 +51,8 @@ def action_api():
                 )
             return success(
                 "The testing server is already configured! remember that "
-                "the data on this server can be deleted without prior "
-                "notice, when you want to configure your company server "
-                "you should only execute the command `/pass configure` along "
-                "with the url of your the server."
+                "the data on this server will be deleted without prior "
+                "notice, when you are ready to configure your company's server "
+                "just run the command `/pass configure` along "
+                "with the the private server url."
             )

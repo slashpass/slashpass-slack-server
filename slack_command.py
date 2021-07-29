@@ -16,7 +16,7 @@ def api():
     data = request.values.to_dict()
     try:
         command = re.split("\s+", data["text"])
-        slack_id = data["team_id"]
+        team_id = data["team_id"]
         team_domain = data["team_domain"]
         channel = data["channel_id"]
     except KeyError:
@@ -26,7 +26,7 @@ def api():
     if not valid_slack_request(request):
         return abort(404)
 
-    team = db.session.query(Team).filter_by(slack_id=slack_id).first()
+    team = db.session.query(Team).filter_by(team_id=team_id).first()
     if not team:
         return error(
             "You are not registered in our proxy server, try removig the app "
@@ -37,13 +37,13 @@ def api():
         fields = [
             {
                 "title": "`/pass` _or_ `/pass list`",
-                "value": "To list the available passwords in this channel.",
+                "value": "List the available passwords in the channel.",
                 "short": True,
             },
             {
-                "title": "`/pass <secret>` or `/pass show <secret>`",
+                "title": "`/pass <secret>` _or_ `/pass show <secret>`",
                 "value": (
-                    "To retrieve a one time use link with the secret content, "
+                    "Show the one time use link with the secret content, "
                     "this link expires in 15 minutes."
                 ),
                 "short": True,
@@ -51,21 +51,28 @@ def api():
             {
                 "title": "`/pass insert <secret>`",
                 "value": (
-                    "To retrieve the link with the editor to create the "
-                    "secret, this link expires in 15 minutes."
+                    "Show the link with the editor to create the new secret, "
+                    "this link expires in 15 minutes."
                 ),
                 "short": True,
             },
             {
                 "title": "`/pass remove <secret>`",
-                "value": ("To remove the secret from the group."),
+                "value": ("Delete the secret from the channel."),
                 "short": True,
             },
             {
-                "title": "`/pass configure` or `/pass configure <server_url>`",
+                "title": "`/pass configure <private_server_url>` _or_ `/pass configure`",
                 "value": (
-                    "To setup the password storage, it is only necessary "
-                    "to execute it once."
+                    "Configure the password server, "
+                    "it is only necessary to execute it once."
+                ),
+                "short": True,
+            },
+            {
+                "title": "`/pass help`",
+                "value": (
+                    "Show this dialog :robot_face:"
                 ),
                 "short": True,
             },
@@ -91,14 +98,14 @@ def api():
 
         if team.url:
             msg = (
-                "This team is already configured, you want to replace "
-                "the password server?"
+                "You already have a password server configured, "
+                "do you want to replace the current server?"
             )
             return jsonify(
                 {
                     "attachments": [
                         {
-                            "fallback": "This team already configured",
+                            "fallback": "You already have a password server configured",
                             "text": msg,
                             "callback_id": "configure_password_server",
                             "color": "warning",
@@ -125,7 +132,7 @@ def api():
         if not team.register_server(url):
             return error(
                 "Unable to retrieve the _public_key_ "
-                "from the server".format(team_domain)
+                "from the server"
             )
 
         return success("{} team successfully configured!".format(team_domain))
@@ -142,13 +149,13 @@ def api():
             msg = "What type of server do you want to use?"
         else:
             msg = (
-                "*{}* team does not have a password server configured, select "
+                "*{}* team does not have a slashpass server configured, select "
                 "one of the options below to start.".format(team_domain)
             )
 
         warning_msg = (
-            "This is a test server, any information stored on this server "
-            "can be deleted at any moment without prior notice!"
+            "You are choosing a TEST server, any information stored on this server "
+            "will be deleted at any moment without prior notice!"
         )
         return jsonify(
             {
