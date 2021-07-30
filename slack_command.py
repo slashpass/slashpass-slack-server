@@ -24,7 +24,7 @@ def api():
 
     # ensuring that the request comes from slack
     if not valid_slack_request(request):
-        return abort(404)
+        return abort(403)
 
     team = db.session.query(Team).filter_by(team_id=team_id).first()
     if not team:
@@ -142,7 +142,7 @@ def api():
         if team.url:
             msg = (
                 "*{}* team already have a server configured, if you want to "
-                "swap select some of the options below".format(team.name)
+                "swap select some of the options below".format(team.team_name)
             )
         elif command[0] == "configure":
             color = "good"

@@ -86,4 +86,4 @@ class Team(db.Model):
             self.created = datetime.utcnow()
 
     def __repr__(self):
-        return "Slack team: {}".format(self.name)
+        return "Slack team: {}".format(self.team_name)
