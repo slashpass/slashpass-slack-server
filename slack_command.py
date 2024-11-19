@@ -258,8 +258,8 @@ def api():
             {
                 "attachments": [
                     {
-                        "fallback": "Password: {onetime_link}",
-                        "text": "Password for *{app}*",
+                        "fallback": f"Password: {onetime_link}",
+                        "text": f"Password for *{app}*",
                         "footer": "This secret will be valid for 15 minutes",
                         "color": "good",
                         "actions": [

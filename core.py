@@ -21,15 +21,15 @@ class SlashpassCMD(object):
             raise SlashpassError(f"Timeout: {ERRMSG}") from e
         size = 344  # assuming 2048 bits key
 
-        msg = b"".join(
-            decrypt(response.text[i : i + size], self.private_key)
-            for i in range(0, len(response.text), size)
-        )
+        msg = b""
+        for i in range(0, len(response.text), size):
+            partial_msg = decrypt(response.text[i : i + size], self.private_key)
+            if partial_msg is None:
+                raise SlashpassError("Decryption error")
+            msg += partial_msg
 
         if msg == b"":
             return ""
-        elif msg is None:
-            raise SlashpassError("Decryption error")
 
         item_list = msg.decode("utf-8")
         n = item_list.count(channel)
