@@ -1,4 +1,4 @@
-FROM python:3.9-alpine
+FROM python:3.12-alpine
 
 COPY . /app
 
@@ -8,9 +8,7 @@ RUN apk add gcc
 RUN apk add postgresql-dev
 
 WORKDIR /app
-RUN pip install pipenv
-RUN pipenv sync --system
-
+RUN poetry install
 EXPOSE 8000
 
 WORKDIR /app

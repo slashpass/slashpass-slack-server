@@ -71,9 +71,7 @@ def api():
             },
             {
                 "title": "`/pass help`",
-                "value": (
-                    "Show this dialog :robot_face:"
-                ),
+                "value": "Show this dialog :robot_face:",
                 "short": True,
             },
         ]
@@ -130,27 +128,24 @@ def api():
             )
 
         if not team.register_server(url):
-            return error(
-                "Unable to retrieve the _public_key_ "
-                "from the server"
-            )
+            return error("Unable to retrieve the _public_key_ from the server")
 
-        return success("{} team successfully configured!".format(team_domain))
+        return success(f"{team_domain} team successfully configured!")
 
     if command[0] == "configure" and len(command) == 1 or not team.url:
         color = "warning"
         if team.url:
             msg = (
-                "*{}* team already have a server configured, if you want to "
-                "swap select some of the options below".format(team.team_name)
+                f"*{team.team_name}* team already have a server configured, if you want to "
+                f"swap select some of the options below"
             )
         elif command[0] == "configure":
             color = "good"
             msg = "What type of server do you want to use?"
         else:
             msg = (
-                "*{}* team does not have a slashpass server configured, select "
-                "one of the options below to start.".format(team_domain)
+                f"*{team_domain}* team does not have a slashpass server configured, select "
+                f"one of the options below to start."
             )
 
         warning_msg = (
@@ -198,7 +193,7 @@ def api():
         try:
             dir_ls = cmd.list(team, channel)
         except SlashpassError as e:
-            return error("_{}_".format(e.message))
+            return error(f"_{e.message}_")
 
         if not dir_ls:
             return warning(
@@ -211,7 +206,7 @@ def api():
                 "attachments": [
                     {
                         "fallback": dir_ls,
-                        "text": "Password Store\n{}".format(dir_ls),
+                        "text": f"Password Store\n{dir_ls}",
                         "footer": (
                             "Use the command `/pass <key_name>` to retrieve "
                             "some of the keys"
@@ -225,7 +220,7 @@ def api():
         app = command[1]
         token = cmd.generate_insert_token(team, channel, app)
 
-        msg = "Adding password for *{}* in this channel".format(app)
+        msg = f"Adding password for *{app}* in this channel"
         return jsonify(
             {
                 "attachments": [
@@ -239,7 +234,7 @@ def api():
                                 "text": "Open editor",
                                 "style": "primary",
                                 "type": "button",
-                                "url": "{}/insert/{}".format(SLACK_SERVER, token),
+                                "url": f"{SLACK_SERVER}/insert/{token}",
                             }
                         ],
                     }
@@ -250,26 +245,21 @@ def api():
     if command[0] == "remove" and len(command) == 2:
         app = command[1]
         if cmd.remove(team, channel, app):
-            return success("The secret *{}* was removed successfully.".format(app))
+            return success(f"The secret *{app}* was removed successfully.")
         return warning(
-            "Looks like the secret *{}* is not in your repository "
-            ":thinking_face: use the command `/pass list` "
-            "to verify your storage.".format(app)
+            f"Looks like the secret *{app}* is not in your repository "
+            f":thinking_face: use the command `/pass list` "
+            f"to verify your storage."
         )
 
-    if command[0] == "show" and len(command) == 2:
-        app = command[1]
-    else:
-        app = command[0]
-
-    onetime_link = cmd.show(team, channel, app)
-    if onetime_link:
+    app = command[1] if command[0] == "show" and len(command) == 2 else command[0]
+    if onetime_link := cmd.show(team, channel, app):
         return jsonify(
             {
                 "attachments": [
                     {
-                        "fallback": "Password: {}".format(onetime_link),
-                        "text": "Password for *{}*".format(app),
+                        "fallback": "Password: {onetime_link}",
+                        "text": "Password for *{app}*",
                         "footer": "This secret will be valid for 15 minutes",
                         "color": "good",
                         "actions": [
@@ -285,4 +275,4 @@ def api():
             }
         )
     else:
-        return warning("*{}* is not in the password store.".format(app))
+        return warning(f"*{app}* is not in the password store.")

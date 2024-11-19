@@ -16,9 +16,9 @@ class SlashpassError(Exception):
 class SlashpassCMD(object):
     def list(self, team, channel):
         try:
-            response = requests.post(team.api("list/{}".format(channel)))
-        except requests.exceptions.ConnectionError:
-            raise SlashpassError("Timeout: {}".format(ERRMSG))
+            response = requests.post(team.api(f"list/{channel}"))
+        except requests.exceptions.ConnectionError as e:
+            raise SlashpassError(f"Timeout: {ERRMSG}") from e
         size = 344  # assuming 2048 bits key
 
         msg = b"".join(
@@ -34,8 +34,8 @@ class SlashpassCMD(object):
         item_list = msg.decode("utf-8")
         n = item_list.count(channel)
         # formatting response
-        return item_list.replace("{}/".format(channel), "├─ ", n - 1).replace(
-            "{}/".format(channel), "└─ "
+        return item_list.replace(f"{channel}/", "├─ ", n - 1).replace(
+            f"{channel}/", "└─ "
         )
 
     def generate_insert_token(self, team, channel, app):
@@ -48,7 +48,7 @@ class SlashpassCMD(object):
             token,
             pickle.dumps(
                 {
-                    "path": "{}/{}".format(channel, app),
+                    "path": f"{channel}/{app}",
                     "team_id": team.id,
                     "url": team.api("insert"),
                 }
@@ -65,9 +65,7 @@ class SlashpassCMD(object):
         response = requests.post(url, data={"path": path, "secret": secret})
 
         if response.status_code != requests.codes.ok:
-            raise SlashpassError(
-                "Error {}: {}".format(response.status_code, ERRMSG)
-            )
+            raise SlashpassError(f"Error {response.status_code}: {ERRMSG}")
 
         self.cache.delete(token)
 
@@ -75,14 +73,11 @@ class SlashpassCMD(object):
         response = requests.post(
             team.api("remove"), data={"channel": channel, "app": app}
         )
-
-        if response.status_code != requests.codes.ok:
-            return False
-        return True
+        return response.status_code == requests.codes.ok
 
     def show(self, team, channel, app):
         response = requests.post(
-            team.api("onetime_link"), data={"secret": "{}/{}".format(channel, app)}
+            team.api("onetime_link"), data={"secret": f"{channel}/{app}"}
         )
 
         if response.status_code == requests.codes.ok:

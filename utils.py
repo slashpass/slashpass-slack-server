@@ -34,7 +34,7 @@ def valid_slack_request(request):
 
     request_body = urllib.parse.urlencode(dict(request.form))
 
-    sig_basestring = "v0:" + timestamp + ":" + request_body
+    sig_basestring = f"v0:{timestamp}:{request_body}"
 
     if abs(time.time() - float(timestamp)) > 60:
         # The request timestamp is more than one minutes from local time.
@@ -51,7 +51,4 @@ def valid_slack_request(request):
     )
 
     slack_signature = request.headers["X-Slack-Signature"]
-    if signature == slack_signature:
-        return True
-
-    return False
+    return signature == slack_signature

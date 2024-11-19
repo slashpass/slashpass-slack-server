@@ -13,6 +13,7 @@ insert_view = Blueprint("insert_view", __name__)
 def root():
     return render_template("redirect.html", redirect_url=HOMEPAGE)
 
+
 @insert_view.route("/<token>", methods=["GET"])
 def insert(token):
     token = str(token)
@@ -21,4 +22,4 @@ def insert(token):
     obj = pickle.loads(cache[token])
     team_id = obj["team_id"]
     team = db.session.query(Team).filter_by(id=team_id).first()
-    return render_template("redirect.html", redirect_url="{}/insert/{}".format(team.url, token))
+    return render_template("redirect.html", redirect_url=f"{team.url}/insert/{token}")

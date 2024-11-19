@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from urllib.parse import urlparse, urlunparse
 
 import redis
@@ -83,7 +83,7 @@ class Team(db.Model):
         self.team_id = team_id
         self.team_name = team_name
         if self.created is None:
-            self.created = datetime.utcnow()
+            self.created = datetime.now(timezone.utc)
 
     def __repr__(self):
-        return "Slack team: {}".format(self.team_name)
+        return f"Slack team: {self.team_name}"
