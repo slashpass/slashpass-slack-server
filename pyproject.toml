@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "slashpass-slack-server"
+version = "1"
+description = ""
+authors = ["Mauricio <m@slashpass.co>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^3.0.3"
+requests = "^2.32.3"
+flask-sqlalchemy = "^3.1.1"
+redis = "^5.2.0"
+deterministic-rsa-keygen = "^1.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
