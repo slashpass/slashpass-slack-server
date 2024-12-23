@@ -52,9 +52,8 @@ def action_api():
                 "An error occurred registering the server, " "please try later."
             )
         return success(
-            "The testing server is already configured! remember that "
-            "the data on this server will be deleted without prior "
-            "notice, when you are ready to configure your company's server "
-            "just run the command `/pass configure` along "
-            "with the the private server url."
+            "The test server is ready to use! Please note that the data on this "
+            "server may be deleted without prior notice. When you're ready "
+            "to configure your company's server, simply run the command "
+            "/pass configure along with the URL of the private server"
         )

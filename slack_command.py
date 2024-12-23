@@ -43,35 +43,35 @@ def api():
             {
                 "title": "`/pass <secret>` _or_ `/pass show <secret>`",
                 "value": (
-                    "Show the one time use link with the secret content, "
-                    "this link expires in 15 minutes."
+                    "Displays a one-time-use link containing the secret content. "
+                    "This link expires in 15 minutes."
                 ),
                 "short": True,
             },
             {
                 "title": "`/pass insert <secret>`",
                 "value": (
-                    "Show the link with the editor to create the new secret, "
-                    "this link expires in 15 minutes."
+                    "Displays a link to the editor for creating a new secret. "
+                    "This link expires in 15 minutes."
                 ),
                 "short": True,
             },
             {
                 "title": "`/pass remove <secret>`",
-                "value": ("Delete the secret from the channel."),
+                "value": ("Deletes the secret from the channel."),
                 "short": True,
             },
             {
                 "title": "`/pass configure <private_server_url>` _or_ `/pass configure`",
                 "value": (
-                    "Configure the password server, "
-                    "it is only necessary to execute it once."
+                    "Configures the password server. "
+                    "This only needs to be executed once."
                 ),
                 "short": True,
             },
             {
                 "title": "`/pass help`",
-                "value": "Show this dialog :robot_face:",
+                "value": "Displays this dialog :robot_face:",
                 "short": True,
             },
         ]
@@ -79,9 +79,7 @@ def api():
             {
                 "attachments": [
                     {
-                        "fallback": (
-                            "_Usage:_ https://github.com/talpor/password-scale"
-                        ),
+                        "fallback": ("_Usage:_ https://slashpass.co/configure"),
                         "text": "*_Usage:_*",
                         "fields": fields,
                     }
@@ -149,8 +147,8 @@ def api():
             )
 
         warning_msg = (
-            "You are choosing a TEST server, any information stored on this server "
-            "will be deleted at any moment without prior notice!"
+            "You are choosing the TEST server. Any information stored on this server "
+            "may be deleted at any time without prior notice."
         )
         return jsonify(
             {
@@ -174,7 +172,7 @@ def api():
                                 },
                             },
                             {
-                                "text": "Request Private Server",
+                                "text": "Configure Private Server",
                                 "type": "button",
                                 "url": CONFIGURATION_GUIDE_URL,
                             },
@@ -197,7 +195,7 @@ def api():
 
         if not dir_ls:
             return warning(
-                "You have not passwords created for this channel, use "
+                "You have not created any passwords for this channel, use "
                 "`/pass insert <secret>` to create the first one!"
             )
 
